@@ -1,0 +1,48 @@
+# xmrmix live run, 2026-10-16 (nym-socks5-client 1.1.86, exit gateway node 3182 IT, anonymous replies on)
+
+$ xmrmix ip -v
+  [   1.47s] dns  api.ipify.org -> 104.26.12.205, 172.67.74.152, 104.26.13.205 (DoH via 1.1.1.1, over mixnet, 1.46s)
+  [   1.47s] send GET https://api.ipify.org -> socks5 127.0.0.1:1081 -> mixnet -> 104.26.12.205:443 (attempt 1)
+  [   6.49s] recv HTTP 200 OK from api.ipify.org in 5.02s (13 bytes)
+  https://api.ipify.org sees this request coming from 91.201.67.161 (a Nym exit gateway)
+
+$ xmrmix info
+  https://xmr.ci.vet:443
+  height          3784858
+  target_height   0
+  top_block_hash  81bdfd27b34f9d0e43f0f5a513fdb3a2420a0ad424ed8c58cbccdacd9a331d15
+  difficulty      698932939700
+  tx_pool_size    61
+  version         
+  synchronized    True
+  mainnet         True
+  status          OK
+
+$ xmrmix fee
+  https://monero-rpc.cheems.de.box.skhron.com.ua:443
+  fee per byte  20000 atomic units (quantization mask 10000)
+  tiers          20000, 80000, 320000, 4000000
+
+$ xmrmix broadcast <confirmed tx, 30 confirmations>   # key images already spent: a harmless no-op
+  tx v2, 4285 bytes, 5 input(s)
+  [   1.33s] dns  monero.fail -> 40.160.139.239 (DoH via 1.1.1.1, over mixnet, 1.32s)
+  [   1.33s] send GET https://monero.fail/nodes.json -> socks5 127.0.0.1:1081 -> mixnet -> 40.160.139.239:443 (attempt 1)
+  [   3.61s] recv HTTP 200 OK from monero.fail in 2.28s (42624 bytes)
+  [   6.71s] dns  node.chaoswg.dev -> 87.106.214.196 (DoH via 1.1.1.1, over mixnet, 3.09s)
+  [   6.71s] send POST https://node.chaoswg.dev:443/send_raw_transaction -> socks5 127.0.0.1:1081 -> mixnet -> 87.106.214.196:443 (attempt 1)
+  [   7.04s] dns  xmr.visnova.pl -> 95.215.20.75 (DoH via 1.1.1.1, over mixnet, 3.43s)
+  [   7.04s] send POST https://xmr.visnova.pl:443/send_raw_transaction -> socks5 127.0.0.1:1081 -> mixnet -> 95.215.20.75:443 (attempt 1)
+  [   7.53s] dns  connect.xmr-node.org -> 152.53.95.190 (DoH via 1.1.1.1, over mixnet, 3.92s)
+  [   7.53s] send POST https://connect.xmr-node.org:443/send_raw_transaction -> socks5 127.0.0.1:1081 -> mixnet -> 152.53.95.190:443 (attempt 1)
+  [   8.56s] recv HTTP 200 OK from node.chaoswg.dev in 1.85s (431 bytes)
+  [   8.96s] recv HTTP 200 Ok from xmr.visnova.pl in 1.92s (431 bytes)
+  [   9.38s] recv HTTP 200 OK from connect.xmr-node.org in 1.85s (431 bytes)
+  REJECTED  https://connect.xmr-node.org:443  5.77s  not_relayed
+  REJECTED  https://xmr.visnova.pl:443  5.35s  not_relayed
+  REJECTED  https://node.chaoswg.dev:443  4.94s  not_relayed
+
+# gateway: curl through 127.0.0.1:18081 (JSON-RPC, a plain endpoint, a binary .bin endpoint)
+  xmrmix gateway on http://127.0.0.1:18081  ->  2 candidate node(s), via Nym
+  POST /json_rpc -> https://node.wagyu.xyz:443 HTTP 200 127 B 3.6s
+  POST /get_height -> https://node.wagyu.xyz:443 HTTP 200 146 B 1.9s
+  POST /get_transaction_pool_hashes.bin -> https://node.wagyu.xyz:443 HTTP 200 1898 B 1.9s
